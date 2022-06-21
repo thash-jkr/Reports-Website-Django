@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}home{% endblock title %}
+{% block title %}Sales list{% endblock title %}
 
 {% block content %}
-Hello World
-{% lorem 9 b random %}
+Sales List<br/>
+
+{% for obj in objects %}
+{{ obj }}
+{% endfor %}
 {% endblock content %}
