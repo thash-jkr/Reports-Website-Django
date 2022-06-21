@@ -6,6 +6,6 @@
 Sales List<br/>
 
 {% for obj in objects %}
-{{ obj }}
+    <a href="{{ obj.get_absolute_url }}">{{ obj }}</a>
 {% endfor %}
 {% endblock content %}
