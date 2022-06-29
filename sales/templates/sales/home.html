@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}home{% endblock title %}
 
 {% block content %}
-Hello World
-{% lorem 9 b random %}
+{{ hello }}
+<hr>
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary mt-3">Search</button>
+</form>
+<hr>
+{% lorem 10 p %}
 {% endblock content %}
