@@ -6,6 +6,8 @@
 Sales List<br/>
 
 {% for obj in objects %}
-    <a href="{{ obj.get_absolute_url }}">{{ obj }}</a>
+    <div class="card mb-3">
+        <a href="{% url 'sales:detail' obj.pk %}" class="card-body">{{ obj }}</a>
+    </div>
 {% endfor %}
 {% endblock content %}
