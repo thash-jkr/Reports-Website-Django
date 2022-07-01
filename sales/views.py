@@ -5,10 +5,12 @@ from django.views.generic import ListView, DetailView
 
 from .models import Sale
 from .forms import SalesSearchForm
+from .utils import get_customer, get_salesman
 
 # Create your views here.
 def home(request):
     sales_df = None
+    positions_df = None
     form = SalesSearchForm(request.POST or None)
 
     if request.method == "POST":
@@ -19,7 +21,11 @@ def home(request):
 
         if len(sales_qs) > 0:
             sales_df = pd.DataFrame(sales_qs.values())
-            sales_df = sales_df.to_html()
+            sales_df["customer_id"] = sales_df["customer_id"].apply(get_customer)
+            sales_df["salesman_id"] = sales_df["salesman_id"].apply(get_salesman)
+            sales_df.rename({"customer_id": "customer", "salesman_id": "salesman"}, axis=1, inplace=True)
+            sales_df["created"] = sales_df["created"].apply(lambda x: x.strftime("%Y-%m-%d"))
+            sales_df["updated"] = sales_df["updated"].apply(lambda x: x.strftime("%Y-%m-%d"))
             positions_data = []
 
             for sale in sales_qs:
@@ -33,7 +39,9 @@ def home(request):
                     }
                     positions_data.append(obj)
 
-            positions_df = pd.DataFrame(positions_data).to_html()
+            positions_df = pd.DataFrame(positions_data)
+            positions_df = positions_df.to_html()
+            sales_df = sales_df.to_html()
         else:
             print("NO DATA")
 
