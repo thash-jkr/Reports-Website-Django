@@ -14,12 +14,10 @@
 <hr>
 {% if not sales_df.isempty %}
     {{ sales_df|safe }}
-{% else %}
-    <h3>No Data</h3>
-{% endif %}
-<hr>
-{% if not positions_df.isempty %}
+    <hr>
     {{ positions_df|safe }}
+    <hr>
+    {{ merged_df|safe }}
 {% else %}
     <h3>No Data</h3>
 {% endif %}
