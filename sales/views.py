@@ -28,7 +28,8 @@ def home(request):
                         "position_id": pos.id,
                         "product": pos.product.name,
                         "quantity": pos.quantity,
-                        "price": pos.price
+                        "price": pos.price,
+                        "sales_id": pos.get_sales_id()
                     }
                     positions_data.append(obj)
 
