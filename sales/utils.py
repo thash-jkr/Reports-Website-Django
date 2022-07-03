@@ -27,21 +27,27 @@ def get_graph():
     buffer.close()
     return graph
 
-def get_chart(type, data, **kwargs):
+def get_key(res):
+    key = None
+    if res == "#1":
+        key = "transaction_id"
+    elif res == "#2":
+        key = "created"
+    return key
+
+def get_chart(type, data, results_by,**kwargs):
     plt.switch_backend("AGG")
     fig = plt.figure(figsize=(10, 4))
+    key = get_key(results_by)
+    df = data.groupby(key, as_index=False)["total_price"].agg("sum")
 
     if type == "#1":
-        print("Bar chart")
-        # plt.bar(data["transaction_id"], data["price"])
-        sns.barplot(data=data, x="transaction_id", y="price")
+        # plt.bar(df[key], df["total_price"])
+        sns.barplot(data=df, x=key, y="total_price")
     elif type == "#2":
-        print("Pie chart")
-        labels = kwargs.get("labels")
-        plt.pie(data=data, x="price", labels=labels)
+        plt.pie(data=df, x="total_price", labels=df[key].values)
     elif type == "#3":
-        print("Line chart")
-        plt.plot(data["transaction_id"], data["price"])
+        plt.plot(df[key], df["total_price"])
     else:
         print("Error error erroR")
 

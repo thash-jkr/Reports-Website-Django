@@ -22,6 +22,7 @@ def home(request):
         date_from = request.POST.get("date_from")
         date_to = request.POST.get("date_to")
         chart_type = request.POST.get("chart_type")
+        results_by = request.POST.get("results_by")
         sales_qs = Sale.objects.filter(created__date__lte=date_to, created__date__gte=date_from)
 
         if len(sales_qs) > 0:
@@ -47,7 +48,7 @@ def home(request):
             positions_df = pd.DataFrame(positions_data)
             merged_df = pd.merge(sales_df, positions_df, on="sales_id")
             df = merged_df.groupby("transaction_id", as_index=False)["price"].agg("sum")
-            chart = get_chart(chart_type, df, labels=df["transaction_id"].values)
+            chart = get_chart(chart_type, sales_df, results_by)
 
             positions_df = positions_df.to_html()
             sales_df = sales_df.to_html()
