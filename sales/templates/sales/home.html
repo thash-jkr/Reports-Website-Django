@@ -15,23 +15,26 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Add Report</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          ...
+
+        <div class="modal-body" id="modal-body">
+            <div id="alert-box"></div>
+          <form id="report-form">
+              {% csrf_token %}
+              {{ report_form|crispy }}
+              <button type="submit" class="btn btn-info mt-3">Save</button>
+          </form>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+
       </div>
     </div>
   </div>
 <hr>
 <form action="" method="POST">
     {% csrf_token %}
-    {{ form|crispy }}
+    {{ search_form|crispy }}
     <button type="submit" class="btn btn-primary mt-3">Search</button>
 </form>
 <hr>
@@ -46,7 +49,6 @@
     <hr>
     <img src="data:image/png;base64, {{ chart|safe }}" id="img">
     <hr>
-    <button class="btn btn-success">Report</button>
 {% else %}
     <h3>No Data</h3>
 {% endif %}
