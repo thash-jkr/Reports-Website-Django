@@ -12,33 +12,39 @@
 {{ hello }}
 <hr>
 <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Report</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-
-        <div class="modal-body" id="modal-body">
-            <div id="alert-box"></div>
-          <form id="report-form">
-              {% csrf_token %}
-              {{ report_form|crispy }}
-              <button type="submit" class="btn btn-info mt-3">Save</button>
-          </form>
-        </div>
-
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+
+      <div class="modal-body" id="modal-body">
+          <div id="alert-box"></div>
+        <form id="report-form">
+            {% csrf_token %}
+            {{ report_form|crispy }}
+            <button type="submit" class="btn btn-info mt-3">Save</button>
+        </form>
+      </div>
+
     </div>
   </div>
-<hr>
+</div>
+
+{% if no_data %}
+  <div class="alert alert-warning" role="alert">
+    {{ no_data }}
+  </div>
+{% endif %}
+
 <form action="" method="POST">
     {% csrf_token %}
     {{ search_form|crispy }}
     <button type="submit" class="btn btn-primary mt-3">Search</button>
 </form>
 <hr>
-{% if not sales_df.isempty %}
+{% if sales_df %}
     {{ sales_df|safe }}
     <hr>
     {{ positions_df|safe }}
@@ -49,11 +55,7 @@
     <hr>
     <img src="data:image/png;base64, {{ chart|safe }}" id="img">
     <hr>
-{% else %}
-    <h3>No Data</h3>
 {% endif %}
-<hr>
 <button class="btn btn-primary not-visible" id="report-btn" data-bs-toggle="modal" data-bs-target="#reportModal">Add Report</button>
-<hr>
 {% lorem 10 p %}
 {% endblock content %}
