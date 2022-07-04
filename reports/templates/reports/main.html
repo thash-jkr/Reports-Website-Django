@@ -8,6 +8,17 @@
     <h1>Reports</h1>
     <hr>
     {% for obj in object_list %}
-        {{ obj.name }} by {{ obj.author }} -> <a href="{% url 'reports:detail' obj.id %}">Click here</a> <br>
+        <div class="card mb-3">
+            {% if obj.image %}
+                <img src="{{ obj.image.url }}" class="card-img-top" alt="...">
+            {% endif %}           
+            <div class="card-body">
+                <h5 class="card-title">{{ obj.name }}</h5>
+                <p class="card-text">{{ obj.remarks|truncatewords:2 }}</p>
+                <a href="{% url 'reports:detail' obj.id %}" class="btn btn-primary">Know more</a>
+                <a href="#" class="btn btn-danger">PDF</a>
+            </div>
+        </div>
+        <hr>
     {% endfor %}
 {% endblock content %}
