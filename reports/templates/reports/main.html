@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    reports
+{% endblock title %}
+
+{% block content %}
+    <h1>Reports</h1>
+    <hr>
+    {% for obj in object_list %}
+        {{ obj.name }} by {{ obj.author }} -> <a href="{% url 'reports:detail' obj.id %}">Click here</a> <br>
+    {% endfor %}
+{% endblock content %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from numpy import imag
+from django.views.generic import ListView, DetailView
 
 from profiles.models import Profile
 from .models import Report
@@ -8,6 +8,16 @@ from .utils import GetReportImage
 from .forms import ReportForm
 
 # Create your views here.
+class ReportListView(ListView):
+    model = Report
+    template_name = "reports/main.html"
+
+
+class ReportDetailView(DetailView):
+    model = Report
+    template_name = "reports/detail.html"
+
+
 def createReport(request):
     form = ReportForm(request.POST or None)
     if request.method == "POST":
