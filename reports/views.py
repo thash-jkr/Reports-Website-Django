@@ -1,7 +1,10 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.generic import ListView, DetailView
+from django.conf import settings
+from django.template.loader import get_template
 
+from xhtml2pdf import pisa
 from profiles.models import Profile
 from .models import Report
 from .utils import GetReportImage
@@ -36,3 +39,22 @@ def createReport(request):
 
         return JsonResponse({"msg": "send"})
     return JsonResponse({})
+
+def render_pdf_view(request):
+    template_path = 'reports/pdf.html'
+    context = {'hello': 'Hello World'}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    response['Content-Disposition'] = 'filename="report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funny view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
