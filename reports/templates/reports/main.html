@@ -16,7 +16,7 @@
                 <h5 class="card-title">{{ obj.name }}</h5>
                 <p class="card-text">{{ obj.remarks|truncatewords:2 }}</p>
                 <a href="{% url 'reports:detail' obj.id %}" class="btn btn-primary">Know more</a>
-                <a href="#" class="btn btn-danger">PDF</a>
+                <a href="{% url 'reports:pdf' obj.id %}" class="btn btn-danger">PDF</a>
             </div>
         </div>
         <hr>
