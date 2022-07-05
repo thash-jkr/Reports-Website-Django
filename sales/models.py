@@ -15,7 +15,7 @@ class Position(models.Model):
     created = models.DateTimeField(blank=True)
 
     def save(self, *args, **kwargs):
-        self.price = self.product.price * self.quantity
+        self.price = int(self.product.price) * int(self.quantity)
         return super().save(*args, **kwargs)
 
     def get_sales_id(self):
