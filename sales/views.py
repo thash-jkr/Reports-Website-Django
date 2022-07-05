@@ -1,7 +1,8 @@
+from django.http import HttpResponse
 import pandas as pd
 
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 
 from .models import Sale
 from .forms import SalesSearchForm
@@ -83,3 +84,11 @@ class SalesListView(ListView):
 class SalesDetailView(DetailView):
     model = Sale
     template_name = "sales/detail.html"
+
+
+class UploadTemplateView(TemplateView):
+    template_name = "sales/from_file.html"
+
+
+def csv_upload_view(request):
+    return HttpResponse()
