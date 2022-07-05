@@ -2,9 +2,10 @@ import csv
 import pandas as pd
 
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.generic import ListView, DetailView, TemplateView
 from django.utils.dateparse import parse_date
+from sqlalchemy import false
 
 from profiles.models import Profile
 from .models import Sale, Position, CSV
@@ -132,5 +133,8 @@ def csv_upload_view(request):
                         )
                         sale_obj.positions.add(position_obj)
                         sale_obj.save()
+                return JsonResponse({"ex": False})
+        else:
+            return JsonResponse({"ex": True})
 
     return HttpResponse()
