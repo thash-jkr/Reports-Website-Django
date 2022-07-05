@@ -1,10 +1,12 @@
-from django.http import HttpResponse
+import csv
 import pandas as pd
 
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, TemplateView
+from django.utils.dateparse import parse_date
 
-from .models import Sale
+from .models import Sale, Position, CSV
 from .forms import SalesSearchForm
 from reports.forms import ReportForm
 from .utils import get_customer, get_salesman, get_graph, get_chart
@@ -91,4 +93,18 @@ class UploadTemplateView(TemplateView):
 
 
 def csv_upload_view(request):
+    if request.method == "POST":
+        csv_file = request.FILES.get("file")
+        obj = CSV.objects.create(file_name = csv_file)
+
+        with open(obj.file_name.path, "r") as f:
+            reader = csv.reader(f)
+            reader.__next__()
+            for row in reader:
+                transaction_id = row[1]
+                product = row[2]
+                quantity = row[3]
+                customer = row[4]
+                created = parse_date(row[5])
+
     return HttpResponse()
