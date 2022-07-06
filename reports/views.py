@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views.generic import ListView, DetailView
-from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template.loader import get_template
 
 from xhtml2pdf import pisa
@@ -11,16 +12,17 @@ from .utils import GetReportImage
 from .forms import ReportForm
 
 # Create your views here.
-class ReportListView(ListView):
+class ReportListView(LoginRequiredMixin, ListView):
     model = Report
     template_name = "reports/main.html"
 
 
-class ReportDetailView(DetailView):
+class ReportDetailView(LoginRequiredMixin, DetailView):
     model = Report
     template_name = "reports/detail.html"
 
 
+@login_required
 def createReport(request):
     form = ReportForm(request.POST or None)
     if request.method == "POST":
@@ -40,6 +42,7 @@ def createReport(request):
         return JsonResponse({"msg": "send"})
     return JsonResponse({})
 
+@login_required
 def render_pdf_view(request, pk):
     template_path = 'reports/pdf.html'
     obj = get_object_or_404(Report, id=pk)

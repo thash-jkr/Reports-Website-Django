@@ -9,7 +9,7 @@ def login_view(request):
         form = AuthenticationForm(data=request.POST)
 
         if form.is_valid():
-            form = form.cleaned_data()
+            form = form.cleaned_data
             username = form.get("username")
             password = form.get("password")
             user = authenticate(username=username, password=password)

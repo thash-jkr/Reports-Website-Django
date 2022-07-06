@@ -4,6 +4,8 @@ import pandas as pd
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import ListView, DetailView, TemplateView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.dateparse import parse_date
 from sqlalchemy import false
 
@@ -16,6 +18,7 @@ from reports.forms import ReportForm
 from .utils import get_customer, get_salesman, get_graph, get_chart
 
 # Create your views here.
+@login_required
 def home(request):
     sales_df = None
     positions_df = None
@@ -81,21 +84,22 @@ def home(request):
     return render(request, "sales/home.html", context)
 
 
-class SalesListView(ListView):
+class SalesListView(LoginRequiredMixin, ListView):
     model = Sale
     template_name = "sales/main.html"
     context_object_name = "objects"
 
 
-class SalesDetailView(DetailView):
+class SalesDetailView(LoginRequiredMixin, DetailView):
     model = Sale
     template_name = "sales/detail.html"
 
 
-class UploadTemplateView(TemplateView):
+class UploadTemplateView(LoginRequiredMixin, TemplateView):
     template_name = "sales/from_file.html"
 
 
+@login_required
 def csv_upload_view(request):
     if request.method == "POST":
         csv_file_name = request.FILES.get("file").name
