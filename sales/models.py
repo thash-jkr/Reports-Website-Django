@@ -32,7 +32,7 @@ class Sale(models.Model):
     total_price = models.FloatField(blank=True, null=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     salesman = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    created = models.DateTimeField(blank=True)
+    created = models.DateTimeField(blank=True, null=True)
     updated = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
